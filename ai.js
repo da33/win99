@@ -15,25 +15,32 @@ const systemPrompt = `你是遊戲代充客服小幫手，專業且友善。
 - 快速解答問題`;
 
 async function chat(userMessage) {
-  const response = await axios.post(
-    'https://api.minimax.chat/v1/text/chatcompletion_v2',
-    {
-      model: 'abab6.5s-chat',
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userMessage }
-      ],
-      max_tokens: 300
-    },
-    {
-      headers: {
-        'Authorization': `Bearer ${process.env.MINIMAX_API_KEY}`,
-        'Content-Type': 'application/json'
+  try {
+    console.log('Calling MiniMax API...');
+    const response = await axios.post(
+      'https://api.minimax.chat/v1/text/chatcompletion_v2',
+      {
+        model: 'abab6.5s-chat',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userMessage }
+        ],
+        max_tokens: 300
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${process.env.MINIMAX_API_KEY}`,
+          'Content-Type': 'application/json'
+        }
       }
-    }
-  );
+    );
 
-  return response.data.choices[0].message.content;
+    console.log('MiniMax API response:', response.data);
+    return response.data.choices[0].message.content;
+  } catch (error) {
+    console.error('MiniMax API Error:', error.response?.data || error.message);
+    throw error;
+  }
 }
 
 module.exports = { chat };
