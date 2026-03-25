@@ -16,19 +16,16 @@ const systemPrompt = `你是遊戲代充客服小幫手，專業且友善。
 
 async function chat(userMessage) {
   try {
-    console.log('Calling MiniMax API...');
     const response = await axios.post(
-      'https://api.minimax.chat/v1/text/chatcompletion_pro',
+      'https://api.minimax.chat/v1/text/chatcompletion_v2',
       {
         model: 'abab6.5s-chat',
+        tokens_to_generate: 512,
+        temperature: 0.9,
         messages: [
-          { sender_type: 'USER', sender_name: '用戶', text: userMessage }
-        ],
-        reply_constraints: { sender_type: 'BOT', sender_name: '小助手' },
-        bot_setting: [{
-          bot_name: '小助手',
-          content: systemPrompt
-        }]
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userMessage }
+        ]
       },
       {
         headers: {
@@ -38,10 +35,9 @@ async function chat(userMessage) {
       }
     );
 
-    console.log('MiniMax API response:', response.data);
-    return response.data.reply || response.data.choices?.[0]?.text || '抱歉，我現在無法回應';
+    return response.data.choices[0].message.content;
   } catch (error) {
-    console.error('MiniMax API Error:', error.response?.data || error.message);
+    console.error('MiniMax Error:', error.response?.data || error.message);
     throw error;
   }
 }
