@@ -7,16 +7,25 @@ function randomReply(replies) {
   return replies[Math.floor(Math.random() * replies.length)];
 }
 
-// 從知識庫搜尋答案
+// 從知識庫搜尋答案（改進版：計分匹配）
 function searchKnowledge(msg) {
+  let bestMatch = null;
+  let bestScore = 0;
+
   for (const faq of knowledgeBase.faqs) {
+    let score = 0;
     for (const keyword of faq.keywords) {
       if (msg.includes(keyword)) {
-        return faq.answer;
+        score += keyword.length; // 越長的關鍵字權重越高
       }
     }
+    if (score > bestScore) {
+      bestScore = score;
+      bestMatch = faq.answer;
+    }
   }
-  return null;
+
+  return bestScore > 0 ? bestMatch : null;
 }
 
 // 處理文字訊息
