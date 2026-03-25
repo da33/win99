@@ -18,14 +18,17 @@ async function chat(userMessage) {
   try {
     console.log('Calling MiniMax API...');
     const response = await axios.post(
-      'https://api.minimax.chat/v1/text/chatcompletion_v2',
+      'https://api.minimax.chat/v1/text/chatcompletion_pro',
       {
         model: 'abab6.5s-chat',
         messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userMessage }
+          { sender_type: 'USER', sender_name: '用戶', text: userMessage }
         ],
-        max_tokens: 300
+        reply_constraints: { sender_type: 'BOT', sender_name: '小助手' },
+        bot_setting: [{
+          bot_name: '小助手',
+          content: systemPrompt
+        }]
       },
       {
         headers: {
@@ -36,7 +39,7 @@ async function chat(userMessage) {
     );
 
     console.log('MiniMax API response:', response.data);
-    return response.data.choices[0].message.content;
+    return response.data.reply || response.data.choices?.[0]?.text || '抱歉，我現在無法回應';
   } catch (error) {
     console.error('MiniMax API Error:', error.response?.data || error.message);
     throw error;
