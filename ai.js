@@ -17,25 +17,28 @@ const systemPrompt = `你是遊戲代充客服小幫手，專業且友善。
 async function chat(userMessage) {
   try {
     const response = await axios.post(
-      'https://api.minimax.chat/v1/text/chatcompletion_v2',
+      'https://api.minimaxi.com/anthropic/messages',
       {
-        model: 'abab6.5s-chat',
-        tokens_to_generate: 512,
-        temperature: 0.9,
+        model: 'MiniMax-M2.7',
+        max_tokens: 500,
+        system: systemPrompt,
         messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userMessage }
+          {
+            role: 'user',
+            content: userMessage
+          }
         ]
       },
       {
         headers: {
-          'Authorization': `Bearer ${process.env.MINIMAX_API_KEY}`,
+          'x-api-key': process.env.MINIMAX_API_KEY,
+          'anthropic-version': '2023-06-01',
           'Content-Type': 'application/json'
         }
       }
     );
 
-    return response.data.choices[0].message.content;
+    return response.data.content[0].text;
   } catch (error) {
     console.error('MiniMax Error:', error.response?.data || error.message);
     throw error;
