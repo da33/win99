@@ -1,0 +1,4 @@
+node_modules/
+.env
+customers.json
+*.log
