@@ -1,9 +1,22 @@
 const db = require('./database');
 const { getWelcomeMessage, getPriceList, getPromotions, getHowToOrder, getContactInfo } = require('./messages');
+const knowledgeBase = require('./knowledge-base.json');
 
 // 隨機選擇回覆
 function randomReply(replies) {
   return replies[Math.floor(Math.random() * replies.length)];
+}
+
+// 從知識庫搜尋答案
+function searchKnowledge(msg) {
+  for (const faq of knowledgeBase.faqs) {
+    for (const keyword of faq.keywords) {
+      if (msg.includes(keyword)) {
+        return faq.answer;
+      }
+    }
+  }
+  return null;
 }
 
 // 處理文字訊息
@@ -15,8 +28,17 @@ async function handleMessage(event, client) {
 
   db.saveCustomer(userId);
 
-  let replyText;
+  // 先從知識庫搜尋
+  let replyText = searchKnowledge(msg);
 
+  if (replyText) {
+    return client.replyMessage({
+      replyToken: event.replyToken,
+      messages: [{ type: 'text', text: replyText }]
+    });
+  }
+
+  // 如果知識庫沒找到，使用原本的關鍵字回覆
   if (msg.includes('價格') || msg.includes('價目') || msg.includes('多少錢')) {
     replyText = randomReply([
       '💰 價格超划算的！95折起，儲越多折越多～\n1000以上9折，3000以上85折\n想儲哪款遊戲？',
