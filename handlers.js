@@ -39,7 +39,13 @@ async function handleMessage(event, client) {
   }
 
   // 如果知識庫沒找到，使用原本的關鍵字回覆
-  if (msg.includes('價格') || msg.includes('價目') || msg.includes('多少錢')) {
+  if (msg.includes('你好') || msg.includes('哈囉') || msg.includes('hi') || msg.includes('hello')) {
+    replyText = randomReply([
+      '嗨！歡迎來Win99 😊\n我可以幫你：\n💰 查詢價格\n🎁 了解優惠\n📝 說明流程\n❓ 回答問題\n\n需要什麼服務？',
+      'Hi～我是Win99客服 😊\n有任何問題都可以問我喔！',
+      '哈囉！很高興為你服務 😊\n想了解什麼呢？'
+    ]);
+  } else if (msg.includes('價格') || msg.includes('價目') || msg.includes('多少錢')) {
     replyText = randomReply([
       '💰 價格超划算的！95折起，儲越多折越多～\n1000以上9折，3000以上85折\n想儲哪款遊戲？',
       '嘿！我們折扣很優喔 💰\n基本95折，大額更便宜：\n• 1000+ → 9折\n• 3000+ → 85折\n要儲值嗎？',
@@ -77,9 +83,9 @@ async function handleMessage(event, client) {
     ]);
   } else {
     replyText = randomReply([
-      '不好意思，我只能幫你處理遊戲代充喔～\n需要儲值嗎？',
-      '我是專門負責遊戲代充的客服\n有要儲值的話跟我說！',
-      '抱歉我只會遊戲代充相關的事\n要充值的話我很樂意幫忙 😊'
+      '我可以幫你回答各種問題喔！\n試試問我：\n• 如何註冊\n• 怎麼獲得金幣\n• 遊戲玩法\n• 優惠活動',
+      '有什麼想了解的嗎？\n我可以回答註冊、玩法、優惠等問題～',
+      '不太懂你的問題，可以換個方式問嗎？\n或是問我：註冊、金幣、玩法、活動等 😊'
     ]);
   }
 
