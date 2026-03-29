@@ -1,6 +1,6 @@
 const db = require('./database');
 const { getWelcomeMessage, getPriceList, getPromotions, getHowToOrder, getContactInfo } = require('./messages');
-const knowledgeBase = require('./knowledge-base.json');
+const knowledgeBase = require('./rg-knowledge-base.json');
 
 // 隨機選擇回覆
 function randomReply(replies) {
