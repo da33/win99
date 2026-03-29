@@ -41,13 +41,15 @@ async function handleMessage(event, client) {
     });
   }
 
-  // 通用回覆
+  // 通用回覆 - 更自然的語氣
   if (msg.includes('你好') || msg.includes('哈囉') || msg.includes('hi') || msg.includes('hello')) {
-    replyText = '你好！我是富遊客服，有什麼可以幫你的嗎？';
+    replyText = '嗨！有什麼可以幫你的嗎？';
   } else if (msg.includes('客服') || msg.includes('真人') || msg.includes('聯繫')) {
-    replyText = '我就是真人客服喔！有任何問題都可以直接問我 😊';
+    replyText = '我在這邊喔，有問題直接問沒關係';
+  } else if (msg.includes('謝謝') || msg.includes('感謝')) {
+    replyText = '不客氣～還有其他問題嗎？';
   } else {
-    replyText = '不好意思，我沒有完全理解你的問題。\n\n你可以問我：\n• 如何註冊\n• 怎麼儲值\n• 提款問題\n• 優惠活動\n• 遊戲相關\n\n或直接描述你遇到的問題';
+    replyText = '嗯...我好像沒聽懂你的意思\n\n你可以換個方式問問看，或是問我註冊、儲值、提款這些問題';
   }
 
   return client.replyMessage({
@@ -59,8 +61,7 @@ async function handleMessage(event, client) {
 // 處理按鈕點擊
 async function handlePostback(event, client) {
   const data = event.postback.data;
-
-  let replyText = '收到你的請求了，請稍等';
+  let replyText = '收到了，稍等一下';
 
   return client.replyMessage({
     replyToken: event.replyToken,
