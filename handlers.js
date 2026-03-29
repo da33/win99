@@ -1,13 +1,7 @@
 const db = require('./database');
-const { getWelcomeMessage, getPriceList, getPromotions, getHowToOrder, getContactInfo } = require('./messages');
 const knowledgeBase = require('./rg-knowledge-base.json');
 
-// 隨機選擇回覆
-function randomReply(replies) {
-  return replies[Math.floor(Math.random() * replies.length)];
-}
-
-// 從知識庫搜尋答案（改進版：計分匹配）
+// 從知識庫搜尋答案
 function searchKnowledge(msg) {
   let bestMatch = null;
   let bestScore = 0;
@@ -16,7 +10,7 @@ function searchKnowledge(msg) {
     let score = 0;
     for (const keyword of faq.keywords) {
       if (msg.includes(keyword)) {
-        score += keyword.length; // 越長的關鍵字權重越高
+        score += keyword.length;
       }
     }
     if (score > bestScore) {
@@ -47,55 +41,13 @@ async function handleMessage(event, client) {
     });
   }
 
-  // 如果知識庫沒找到，使用原本的關鍵字回覆
+  // 通用回覆
   if (msg.includes('你好') || msg.includes('哈囉') || msg.includes('hi') || msg.includes('hello')) {
-    replyText = randomReply([
-      '嗨！歡迎來Win99 😊\n我可以幫你：\n💰 查詢價格\n🎁 了解優惠\n📝 說明流程\n❓ 回答問題\n\n需要什麼服務？',
-      'Hi～我是Win99客服 😊\n有任何問題都可以問我喔！',
-      '哈囉！很高興為你服務 😊\n想了解什麼呢？'
-    ]);
-  } else if (msg.includes('價格') || msg.includes('價目') || msg.includes('多少錢')) {
-    replyText = randomReply([
-      '💰 價格超划算的！95折起，儲越多折越多～\n1000以上9折，3000以上85折\n想儲哪款遊戲？',
-      '嘿！我們折扣很優喔 💰\n基本95折，大額更便宜：\n• 1000+ → 9折\n• 3000+ → 85折\n要儲值嗎？',
-      '價格的話～95折起跳！\n儲值金額越高折扣越好 💰\n1000以上9折，3000以上85折\n需要幫你算嗎？'
-    ]);
-  } else if (msg.includes('優惠') || msg.includes('活動') || msg.includes('促銷')) {
-    replyText = randomReply([
-      '🎁 現在超多優惠！\n買1000送500（限前20名）\n首儲滿500送100\n要不要試試？',
-      '有啊有啊！限時活動 🎁\n• 買1000送500（快搶，只剩幾個名額）\n• 首儲500送100\n現在最划算！',
-      '優惠多到爆 🎁\n1. 買1000送500（限量20名）\n2. 首儲滿500送100\n手腳要快喔～'
-    ]);
-  } else if (msg.includes('如何') || msg.includes('怎麼') || msg.includes('訂購') || msg.includes('流程')) {
-    replyText = randomReply([
-      '📝 超簡單4步驟：\n1. 告訴我遊戲\n2. 說金額\n3. 給帳號\n4. 付款\n5-10分鐘搞定！要開始嗎？',
-      '很快的！📝\n跟我說遊戲名→金額→帳號→付款\n然後等5-10分鐘就好了\n現在要訂嗎？',
-      '流程超簡單 📝\n講遊戲→講金額→給帳號→付錢\n大概5-10分鐘就充好了\n要試試看嗎？'
-    ]);
-  } else if (msg.includes('聯絡') || msg.includes('客服') || msg.includes('真人')) {
-    replyText = randomReply([
-      '👋 我就是真人啊！\n服務時間 09:00-23:00\n有問題直接問我～',
-      '在在在！我是真人客服 👋\n早上9點到晚上11點都在\n什麼問題都可以問喔',
-      '嘿我在這！真人客服 👋\n09:00-23:00 隨時為你服務\n需要什麼幫忙？'
-    ]);
-  } else if (msg.includes('你好') || msg.includes('哈囉') || msg.includes('hi') || msg.includes('hello')) {
-    replyText = randomReply([
-      '嗨！歡迎來Win99 😊\n專做：原神、崩鐵、王者、絕區零\n想了解價格還是優惠？',
-      'Hi～我是Win99客服 😊\n原神/崩鐵/王者/絕區零 都能充\n需要什麼服務？',
-      '哈囉！Win99遊戲代充 😊\n熱門遊戲都有做喔\n要問價格嗎？還是直接儲值？'
-    ]);
-  } else if (msg.includes('原神') || msg.includes('崩壞') || msg.includes('崩鐵') || msg.includes('王者') || msg.includes('絕區零')) {
-    replyText = randomReply([
-      '好的！要儲多少呢？\n我們有95折起的優惠喔 💰',
-      '沒問題！想儲值多少金額？\n現在有買1000送500的活動 🎁',
-      'OK！金額多少？\n告訴我後就能幫你處理了～'
-    ]);
+    replyText = '你好！我是富遊客服，有什麼可以幫你的嗎？';
+  } else if (msg.includes('客服') || msg.includes('真人') || msg.includes('聯繫')) {
+    replyText = '我就是真人客服喔！有任何問題都可以直接問我 😊';
   } else {
-    replyText = randomReply([
-      '我可以幫你回答各種問題喔！\n試試問我：\n• 如何註冊\n• 怎麼獲得金幣\n• 遊戲玩法\n• 優惠活動',
-      '有什麼想了解的嗎？\n我可以回答註冊、玩法、優惠等問題～',
-      '不太懂你的問題，可以換個方式問嗎？\n或是問我：註冊、金幣、玩法、活動等 😊'
-    ]);
+    replyText = '不好意思，我沒有完全理解你的問題。\n\n你可以問我：\n• 如何註冊\n• 怎麼儲值\n• 提款問題\n• 優惠活動\n• 遊戲相關\n\n或直接描述你遇到的問題';
   }
 
   return client.replyMessage({
@@ -107,23 +59,12 @@ async function handleMessage(event, client) {
 // 處理按鈕點擊
 async function handlePostback(event, client) {
   const data = event.postback.data;
-  const userId = event.source.userId;
 
-  let replyMessage;
-
-  if (data === 'price') {
-    replyMessage = getPriceList();
-  } else if (data === 'promotion') {
-    replyMessage = getPromotions();
-  } else if (data === 'order') {
-    replyMessage = getHowToOrder();
-  } else if (data === 'contact') {
-    replyMessage = getContactInfo();
-  }
+  let replyText = '收到你的請求了，請稍等';
 
   return client.replyMessage({
     replyToken: event.replyToken,
-    messages: [replyMessage]
+    messages: [{ type: 'text', text: replyText }]
   });
 }
 
