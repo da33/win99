@@ -41,15 +41,17 @@ async function handleMessage(event, client) {
     });
   }
 
-  // 通用回覆 - 更自然的語氣
-  if (msg.includes('你好') || msg.includes('哈囉') || msg.includes('hi') || msg.includes('hello')) {
-    replyText = '嗨！有什麼可以幫你的嗎？';
-  } else if (msg.includes('客服') || msg.includes('真人') || msg.includes('聯繫')) {
-    replyText = '我在這邊喔，有問題直接問沒關係';
-  } else if (msg.includes('謝謝') || msg.includes('感謝')) {
-    replyText = '不客氣～還有其他問題嗎？';
+  // 通用回覆
+  if (msg.includes('你好') || msg.includes('哈囉') || msg.includes('hi') || msg.includes('hello') || msg.includes('在嗎')) {
+    replyText = '在的，有什麼需要幫忙嗎？';
+  } else if (msg.includes('客服') || msg.includes('真人') || msg.includes('人工')) {
+    replyText = '我就是真人客服喔，有問題直接問沒關係';
+  } else if (msg.includes('謝謝') || msg.includes('感謝') || msg.includes('thx')) {
+    replyText = '不會～還有其他問題隨時問';
+  } else if (msg.includes('官網') || msg.includes('網址') || msg.includes('連結')) {
+    replyText = 'RG富遊官網：https://rg8888.net\n\n有問題再問我';
   } else {
-    replyText = '嗯...我好像沒聽懂你的意思\n\n你可以換個方式問問看，或是問我註冊、儲值、提款這些問題';
+    replyText = '我沒太懂你的意思欸\n\n你可以問我註冊、儲值、提款、遊戲、優惠這些\n或是換個方式問問看';
   }
 
   return client.replyMessage({
@@ -61,7 +63,7 @@ async function handleMessage(event, client) {
 // 處理按鈕點擊
 async function handlePostback(event, client) {
   const data = event.postback.data;
-  let replyText = '收到了，稍等一下';
+  let replyText = '收到，稍等';
 
   return client.replyMessage({
     replyToken: event.replyToken,
