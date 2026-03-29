@@ -60,9 +60,27 @@ async function handleMessage(event, client) {
 
   let replyText;
 
-  // 檢查是否要轉接真人
+  // 快速流程：我要儲值
+  if (msg.includes('我要儲值') || msg.includes('想儲值')) {
+    replyText = '好的！儲值方式：\n\n💳 銀行轉帳（5千-10萬）\n🏪 超商（1千-2萬）\n💰 USDT（3千-2萬）\n💵 支付寶（1千-6千）\n\n通常1-5分鐘到帳\n\n需要詳細教學嗎？';
+    return client.replyMessage({
+      replyToken: event.replyToken,
+      messages: [{ type: 'text', text: replyText }]
+    });
+  }
+
+  // 快速流程：我要提款
+  if (msg.includes('我要提款') || msg.includes('想提款')) {
+    replyText = '提款前確認：\n\n✅ 完成實名認證了嗎？\n✅ 綁定銀行帳戶了嗎？\n✅ 達到1倍流水了嗎？\n\n都好了的話，3-5分鐘就能到帳\n每天第一次提款免手續費喔\n\n需要幫忙嗎？';
+    return client.replyMessage({
+      replyToken: event.replyToken,
+      messages: [{ type: 'text', text: replyText }]
+    });
+  }
+
+  // 轉接真人客服
   if (msg.includes('真人客服') || msg.includes('人工客服') || msg.includes('轉接') || 
-      msg.includes('找客服') || msg.includes('線上客服')) {
+      msg.includes('找客服') || msg.includes('線上客服') || msg.includes('聯繫客服')) {
     replyText = '好的，幫你轉接\n\n請加LINE官方客服：\n👉 https://line.me/R/ti/p/@rg8888\n\n或直接點這裡聯繫我們';
     return client.replyMessage({
       replyToken: event.replyToken,
@@ -89,7 +107,7 @@ async function handleMessage(event, client) {
   } else if (msg.includes('官網') || msg.includes('網址') || msg.includes('連結')) {
     replyText = 'RG富遊官網：https://rg8888.net\n\n有問題再問我';
   } else {
-    replyText = random(confused) + '\n\n你可以問我註冊、儲值、提款、遊戲、優惠這些\n或是要轉接真人客服也可以';
+    replyText = random(confused) + '\n\n你可以直接說：\n「我要儲值」\n「我要提款」\n「查看優惠」\n或點下方選單快速操作';
   }
 
   return client.replyMessage({

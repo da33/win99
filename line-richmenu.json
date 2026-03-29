@@ -1,0 +1,73 @@
+{
+  "size": "full",
+  "selected": true,
+  "name": "RG富遊快捷選單",
+  "chatBarText": "點我開始",
+  "areas": [
+    {
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1250,
+        "height": 843
+      },
+      "action": {
+        "type": "uri",
+        "label": "🎮 立即註冊領168",
+        "uri": "https://rg8888.net"
+      }
+    },
+    {
+      "bounds": {
+        "x": 1250,
+        "y": 0,
+        "width": 1250,
+        "height": 843
+      },
+      "action": {
+        "type": "message",
+        "label": "💰 我要儲值",
+        "text": "我要儲值"
+      }
+    },
+    {
+      "bounds": {
+        "x": 0,
+        "y": 843,
+        "width": 833,
+        "height": 843
+      },
+      "action": {
+        "type": "message",
+        "label": "💸 我要提款",
+        "text": "我要提款"
+      }
+    },
+    {
+      "bounds": {
+        "x": 833,
+        "y": 843,
+        "width": 834,
+        "height": 843
+      },
+      "action": {
+        "type": "message",
+        "label": "🎁 查看優惠",
+        "text": "有什麼優惠"
+      }
+    },
+    {
+      "bounds": {
+        "x": 1667,
+        "y": 843,
+        "width": 833,
+        "height": 843
+      },
+      "action": {
+        "type": "message",
+        "label": "👤 聯繫客服",
+        "text": "真人客服"
+      }
+    }
+  ]
+}
