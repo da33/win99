@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const line = require('@line/bot-sdk');
-const { handleMessage, handlePostback } = require('./handlers');
+const { handleMessage, handlePostback, handleFollow } = require('./handlers');
 
 const config = {
   channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
@@ -26,6 +26,8 @@ app.post('/webhook', line.middleware(config), async (req, res) => {
         return handleMessage(event, client);
       } else if (event.type === 'postback') {
         return handlePostback(event, client);
+      } else if (event.type === 'follow') {
+        return handleFollow(event, client);
       }
     }));
     res.json({ success: true });
